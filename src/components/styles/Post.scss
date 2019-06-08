@@ -1,0 +1,13 @@
+.Post {
+  &:not(:last-child) {
+    margin-bottom: 20px;
+  }
+
+  &__author {
+    font-size: 13px;
+  }
+
+  &__author-name {
+    display: inline;
+  }
+}
