@@ -23,6 +23,11 @@ export const TopNav = () => (
               Глагнэ
             </NavLink>
           </NavItem>
+          <NavItem>
+            <NavLink tag={Link} to='/login'>
+              Вход
+            </NavLink>
+          </NavItem>
         </Nav>
       </Container>
     </Navbar>

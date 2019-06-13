@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { ApolloProvider } from 'react-apollo-hooks'
 import { Switch, Route } from 'react-router'
 import { GlagnePage } from './pages/GlagnePage'
+import { LoginPage } from './pages/LoginPage'
 import * as serviceWorker from './serviceWorker'
 import { createApolloClient } from './lib/createApolloClient'
 
@@ -14,6 +15,7 @@ const app = (
     <ApolloProvider client={apolloClient}>
       <BrowserRouter>
         <Switch>
+          <Route exact path='/login' component={LoginPage} />
           <Route exact path='/' component={GlagnePage} />
           <Route exact path='/:page' component={GlagnePage} />
         </Switch>

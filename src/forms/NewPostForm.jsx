@@ -44,6 +44,7 @@ export const NewPostForm = () => {
     try {
       const { data } = await addPost()
       window.location.reload()
+      console.log(data)
     } catch (error) {
       setError(error)
     } finally {
