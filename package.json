@@ -18,6 +18,7 @@
     "react-apollo-hooks": "^0.4.5",
     "react-dom": "^16.8.6",
     "react-markdown": "^4.0.8",
+    "react-netlify-identity": "^0.1.7",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
     "react-rte": "^0.16.1",

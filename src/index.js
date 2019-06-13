@@ -6,6 +6,8 @@ import { ApolloProvider } from 'react-apollo-hooks'
 import { Switch, Route } from 'react-router'
 import { GlagnePage } from './pages/GlagnePage'
 import { LoginPage } from './pages/LoginPage'
+import { ConfirmPage } from './pages/ConfirmPage'
+import { AuthorizationGuard } from './components/AuthorizationGuard'
 import * as serviceWorker from './serviceWorker'
 import { createApolloClient } from './lib/createApolloClient'
 
@@ -14,11 +16,15 @@ const app = (
   <>
     <ApolloProvider client={apolloClient}>
       <BrowserRouter>
-        <Switch>
-          <Route exact path='/login' component={LoginPage} />
-          <Route exact path='/' component={GlagnePage} />
-          <Route exact path='/:page' component={GlagnePage} />
-        </Switch>
+        <AuthorizationGuard>
+          <Switch>
+            <Route exact path='/login' component={LoginPage} />
+            <Route exact path='/confirm/:token' component={ConfirmPage} />
+            <Route exact path='/invite/:token' component={ConfirmPage} />
+            <Route exact path='/' component={GlagnePage} />
+            <Route exact path='/:page' component={GlagnePage} />
+          </Switch>
+        </AuthorizationGuard>
       </BrowserRouter>
     </ApolloProvider>
   </>
