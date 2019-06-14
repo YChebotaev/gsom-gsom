@@ -8,6 +8,7 @@ import { ShowError } from '../commons/ShowError'
 import { Spinner } from '../commons/Spinner'
 import { ListOfPosts } from '../components/ListOfPosts'
 import { reverse } from 'ramda'
+import { useNetlifyIdentity } from 'react-netlify-identity'
 
 const GET_POSTS_QUERY = gql`
   query {
@@ -24,13 +25,17 @@ const GET_POSTS_QUERY = gql`
 `
 
 export const GlagnePage = () => {
+  const { isLoggedIn } = useNetlifyIdentity(
+    process.env.REACT_APP_NETLIFY_IDENTITY_URL
+  )
+
   const { data, error, loading } = useQuery(GET_POSTS_QUERY)
 
   return (
     <AppLayout>
       <Block name='GlagnePage'>
         {error && <ShowError error={error} />}
-        <NewPostForm />
+        {isLoggedIn && <NewPostForm />}
         {loading && <Spinner />}
         {data.posts && <ListOfPosts posts={reverse(data.posts)} />}
       </Block>
