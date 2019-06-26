@@ -26,7 +26,9 @@ const GET_POSTS_QUERY = gql`
 
 export const GlagnePage = () => {
   const { isLoggedIn } = useNetlifyIdentity(
-    process.env.REACT_APP_NETLIFY_IDENTITY_URL
+    process.env.REACT_APP_NETLIFY_IDENTITY_URL,
+    function() {},
+    false
   )
 
   const { data, error, loading } = useQuery(GET_POSTS_QUERY)

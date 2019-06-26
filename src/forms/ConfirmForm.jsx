@@ -13,7 +13,9 @@ const enhance = compose(withRouter)
 
 export const ConfirmForm = enhance(({ history, match }) => {
   const { _goTrueInstance, setUser } = useNetlifyIdentity(
-    process.env.REACT_APP_NETLIFY_IDENTITY_URL
+    process.env.REACT_APP_NETLIFY_IDENTITY_URL,
+    function() {},
+    false
   )
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)

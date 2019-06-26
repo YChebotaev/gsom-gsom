@@ -13,7 +13,9 @@ import { useNetlifyIdentity } from 'react-netlify-identity'
 
 export const TopNav = () => {
   const { isLoggedIn } = useNetlifyIdentity(
-    process.env.REACT_APP_NETLIFY_IDENTITY_URL
+    process.env.REACT_APP_NETLIFY_IDENTITY_URL,
+    function() {},
+    false
   )
 
   return (

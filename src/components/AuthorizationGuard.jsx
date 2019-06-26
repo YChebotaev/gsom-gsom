@@ -15,7 +15,7 @@ export const AuthorizationGuard = enhance(({ history, children }) => {
       const token = hash.slice(13)
       history.replace(`/invite/${token}`)
     }
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return children
 })
