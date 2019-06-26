@@ -35,7 +35,7 @@ const ADD_AUTHOR_MUTATION = gql`
 const enhance = compose(withRouter)
 
 export const ConfirmForm = enhance(({ history, match }) => {
-  const { _goTrueInstance, setUser } = useNetlifyIdentity(
+  const { _goTrueInstance, setUser, updateUser } = useNetlifyIdentity(
     process.env.REACT_APP_NETLIFY_IDENTITY_URL,
     function () {},
     false
@@ -60,13 +60,19 @@ export const ConfirmForm = enhance(({ history, match }) => {
       })
       const user = await _goTrueInstance.createUser(response, remember)
       setUser(user)
-      addAuthor({
+      const { data } = await addAuthor({
         variables: {
           email: user.email,
           fullName: nickname,
           confirmedAt: new Date(user.confirmed_at),
           invitedAt: new Date(user.invited_at),
           status: 'PUBLISHED'
+        }
+      })
+      updateUser({
+        user_metadata: {
+          full_name: nickname,
+          authorId: data.createAuthor.id
         }
       })
       return user
