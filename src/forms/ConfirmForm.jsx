@@ -50,16 +50,6 @@ export const ConfirmForm = enhance(({ history, match }) => {
     try {
       const { token } = match.params
       _goTrueInstance._setRememberHeaders(remember)
-      const response = await _goTrueInstance._request('/verify', {
-        method: 'POST',
-        body: JSON.stringify({
-          token,
-          password,
-          type: 'signup'
-        })
-      })
-      const user = await _goTrueInstance.createUser(response, remember)
-      setUser(user)
       const { data } = await addAuthor({
         variables: {
           email: user.email,
@@ -69,12 +59,20 @@ export const ConfirmForm = enhance(({ history, match }) => {
           status: 'PUBLISHED'
         }
       })
-      updateUser({
-        user_metadata: {
-          full_name: nickname,
-          authorId: data.createAuthor.id
-        }
+      const response = await _goTrueInstance._request('/verify', {
+        method: 'POST',
+        body: JSON.stringify({
+          user_metadata: {
+            full_name: nickname,
+            authorId: data.createAuthor.id
+          },
+          token,
+          password,
+          type: 'signup'
+        })
       })
+      const user = await _goTrueInstance.createUser(response, remember)
+      setUser(user)
       return user
     } catch (error) {
       console.error(error)
