@@ -5,6 +5,7 @@ import { Editor } from '../components/Editor'
 import { Block } from '../commons/Block'
 import { useMutation } from 'react-apollo-hooks'
 import gql from 'graphql-tag'
+import { useAuthorId } from '../hooks/useAuthorId'
 
 const ADD_POST_MUTATION = gql`
   mutation($content: String, $authorId: ID) {
@@ -31,10 +32,11 @@ export const NewPostForm = () => {
   const [content, setContent] = useState('')
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState()
+  const [authorId] = useAuthorId()
   const addPost = useMutation(ADD_POST_MUTATION, {
     variables: {
       content,
-      authorId: 'cjwmz47v70b1z0989f7f320uu'
+      authorId
     }
   })
 
