@@ -8,18 +8,43 @@ import { useNetlifyIdentity } from 'react-netlify-identity'
 import { withRouter } from 'react-router'
 import { ShowError } from '../commons/ShowError'
 import { Spinner } from '../commons/Spinner'
+import gql from 'graphql-tag'
+import { useMutation } from 'react-apollo-hooks'
+
+const ADD_AUTHOR_MUTATION = gql`
+  mutation(
+    $email: String
+    $fullName: String
+    $confirmedAt: DateTime
+    $invitedAt: DateTime
+  ) {
+    createAuthor(
+      data: {
+        email: $email
+        fullName: $fullName
+        confirmedAt: $confirmedAt
+        invitedAt: $invitedAt
+        status: PUBLISHED
+      }
+    ) {
+      id
+    }
+  }
+`
 
 const enhance = compose(withRouter)
 
 export const ConfirmForm = enhance(({ history, match }) => {
   const { _goTrueInstance, setUser } = useNetlifyIdentity(
     process.env.REACT_APP_NETLIFY_IDENTITY_URL,
-    function() {},
+    function () {},
     false
   )
   const [password, setPassword] = useState('')
+  const [nickname, setNickname] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState()
+  const addAuthor = useMutation(ADD_AUTHOR_MUTATION)
 
   const confirmUser = async (password, remember) => {
     try {
@@ -35,6 +60,15 @@ export const ConfirmForm = enhance(({ history, match }) => {
       })
       const user = await _goTrueInstance.createUser(response, remember)
       setUser(user)
+      addAuthor({
+        variables: {
+          email: user.email,
+          fullName: nickname,
+          confirmedAt: new Date(user.confirmed_at),
+          invitedAt: new Date(user.invited_at),
+          status: 'PUBLISHED'
+        }
+      })
       return user
     } catch (error) {
       console.error(error)
@@ -44,6 +78,10 @@ export const ConfirmForm = enhance(({ history, match }) => {
 
   const onChangePassword = e => {
     setPassword(e.target.value)
+  }
+
+  const onChangeNickname = e => {
+    setNickname(e.target.value)
   }
 
   const onRegister = async e => {
@@ -66,6 +104,15 @@ export const ConfirmForm = enhance(({ history, match }) => {
       {error && <ShowError error={error} />}
       {loading && <Spinner />}
       <Form>
+        <FormGroup>
+          <Label for='nickname'>Никнейм</Label>
+          <Input
+            type='text'
+            name='nickname'
+            value={nickname}
+            onChange={onChangeNickname}
+          />
+        </FormGroup>
         <FormGroup>
           <Label for='password'>Пароль</Label>
           <Input
