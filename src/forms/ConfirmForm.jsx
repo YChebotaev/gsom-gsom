@@ -65,8 +65,7 @@ export const ConfirmForm = enhance(({ history, match }) => {
           email: user.email,
           fullName: nickname,
           confirmedAt: new Date(user.confirmed_at),
-          invitedAt: new Date(user.invited_at),
-          status: 'PUBLISHED'
+          invitedAt: new Date(user.invited_at)
         }
       })
       window.localStorage.setItem('authorId', data.createAuthor.id)
